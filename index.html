@@ -1,63 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="stylesheet" href="./src/css/index.css" />
-    <link rel="stylesheet" href="./src/css/style.css" />
-    <title>Login</title>
-  </head>
-  <body>
-    <main>
-      <div class="container">
-        <form action="" method="post" onsubmit="return loginUser()">
-          <div class="card">
-            <h1>Log in</h1>
-            <div class="label-float">
-              <input type="text" id="user" required/>
-              <label for="user">Username</label>
-            </div>
-            <div class="label-float">
-              <input type="password" id="password" required/>
-                <label for="password">Password</label>
-                <img src="./src/img/eye-regular.svg" id="passShow" alt="eyes">
-            </div>
-
-            <div class="justify">
-              <input type="submit" value="Login"/>
-            </div>
-            <div class="sep">
-              <p>
-                Don't have an account
-                <a href="signup.html">Sign up</a>
-              </p>
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./src/css/index.css">
+  <link rel="stylesheet" href="./src/css/style.css">
+  <title>Login</title>
+</head>
+<body>
+  <main>
+    <div class="container">
+      <form action="" method="post" onsubmit="return loginUser()">
+        <div class="card">
+          <h1>Log in</h1>
+          <div class="label-float">
+            <input type="text" id="user" required/>
+            <label for="user">Username</label>
           </div>
-        </form>
-      </div>
-    </main>
+          <div class="label-float">
+            <input type="password" id="password" required/>
+              <label for="password">Password</label>
+              <img src="./src/img/eye-regular.svg" id="passShow" alt="eyes" onclick="togglePasswordVisibility()">
+          </div>
 
-    <script>
-      function loginUser() {
-        // Perform login validation here
-        var username = document.getElementById('user').value;
-        var password = document.getElementById('password').value;
+          <div class="justify">
+            <input type="submit" value="Login"/>
+          </div>
+          <div class="sep">
+            <p>
+              Don't have an account
+              <a href="signup.html">Sign up</a>
+            </p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
 
-        // Example of simple validation (replace with your actual validation logic)
-        // Check if the entered username and password match the registered credentials
-        if (username === 'yesh' && password === '123') {
-          // If login is successful, redirect to another page
-          // Replace 'target-page.html' with the desired page
-          window.location.href = "main.html";
-          return false; // Prevent form submission
-        } else {
-          // If username or password is incorrect, display an error message
-          alert('Invalid username or password');
-          return false; // Prevent form submission
-        }
+  <script>
+    function loginUser() {
+      var username = document.getElementById('user').value;
+      var password = document.getElementById('password').value;
+    
+      // Retrieve registered user data from local storage
+      var registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+    
+      // Check if the entered username exists in registered users and if the password matches
+      if (registeredUsers.hasOwnProperty(username) && registeredUsers[username] === password) {
+        // If login is successful, redirect to another page
+        // Optionally, you can store the logged-in user's information in local storage for future use
+        window.location.href = 'main.html';
+        return false; // Prevent form submission
+      } else {
+        // If username or password is incorrect, display an error message
+        alert('Invalid username or password');
+        return false; // Prevent form submission
       }
-    </script>
-  </body>
+    }
+    
+    // Function to toggle password visibility
+    function togglePasswordVisibility() {
+      var passwordInput = document.getElementById('password');
+      var passShow = document.getElementById('passShow');
+    
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        passShow.src = "./src/img/eye-slash-regular.svg"; // Change eye icon to slash
+      } else {
+        passwordInput.type = "password";
+        passShow.src = "./src/img/eye-regular.svg"; // Change slash icon to eye
+        
+      }
+    }
+  </script>
+</body>
 </html>
